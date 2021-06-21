@@ -1,0 +1,8 @@
+#pragma once
+
+#include <filesystem>
+namespace fs = std::filesystem;
+
+namespace paths {
+    fs::path project_dir{"@knockout_SOURCE_DIR@"};
+}

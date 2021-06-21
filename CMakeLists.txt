@@ -20,7 +20,7 @@ set(LIBS stdc++fs)
 # configure the main header
 configure_file(
     ${INCLUDE_DIR}/${PROGRAM_NAME}.${INCLUDE_EXT}.in
-    ${INCDIR}/${PROGRAM_NAME}.${INCLUDE_EXT})
+    ${INCLUDE_DIR}/${PROGRAM_NAME}.${INCLUDE_EXT})
 
 # compile the program
 file(GLOB SOURCES ${SOURCES_DIR}/*.${SOURCE_EXT})
