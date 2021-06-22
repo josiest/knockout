@@ -101,17 +101,17 @@ void print_card(std::ostream & os, card const & punch_card)
     os << std::endl;
 
     // print the time in and time out
-    os << "time in:\t" << std::put_time(&punch_in, formats::hour)
+    os << "Time in:\t" << std::put_time(&punch_in, formats::hour)
                        << std::endl;
 
-    os << "time out:\t" << std::put_time(&punch_in, formats::hour)
+    os << "Time out:\t" << std::put_time(&punch_in, formats::hour)
                         << std::endl;
 
     // print the total hours
     auto const hours = std::difftime(std::mktime(&punch_out),
                                      std::mktime(&punch_in)) / 360.0;
     os << std::setprecision(3) << std::fixed;
-    os << "total hours: " << hours << std::endl;
+    os << "Total hours: " << hours << std::endl;
 }
 
 void printlogs()
@@ -132,7 +132,7 @@ void printlogs()
     std::tm latest_punch;
     if (read_punch(&latest_punch)) {
         std::cout << std::put_time(&latest_punch, formats::day) << std::endl;
-        std::cout << "time in: "
+        std::cout << "Time in: "
                   << std::put_time(&latest_punch, formats::hour)
                   << std::endl;
     }

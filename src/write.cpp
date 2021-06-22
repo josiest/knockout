@@ -21,13 +21,13 @@ void punch_in()
 {
     // don't punch in if already punched in
     if (fs::exists(paths::punch_in)) {
-        throw std::runtime_error{"already punched in"};
+        throw std::runtime_error{"Already punched in"};
     }
     // otherwise read the current time
     std::time_t const now = std::time(nullptr);
     std::tm in_time;
     if (!localtime_r(&now, &in_time)) {
-        throw std::runtime_error("couldn't read local time");
+        throw std::runtime_error("Couldn't read local time");
     }
 
     // and write it to the punch-in file
@@ -43,7 +43,7 @@ void punch_out()
 {
     // can't punch out if not punched in
     if (!fs::exists(paths::punch_in)) {
-        throw std::runtime_error{"not punched in"};
+        throw std::runtime_error{"Not punched in"};
     }
     // otherwise read the punch-in time
     std::tm in_time;
@@ -53,7 +53,7 @@ void punch_out()
     std::time_t now = std::time(nullptr);
     std::tm out_time;
     if (!localtime_r(&now, &out_time)) {
-        throw std::runtime_error{"couldn't read local time"};
+        throw std::runtime_error{"Couldn't read local time"};
     }
 
     // update punch-cards
