@@ -18,9 +18,9 @@ Time out:       10:22 AM
 Total hours: 0.008
 ```
 
-You can also `punch archive` to move the current timecards to an archived folder
-and start the time card list fresh. This is useful to restart the timecards
-after a pay-period ends.
+You can also `punch cards archive` to move the current timecards to an archived
+folder and start the time card list fresh. This is useful to restart the
+timecards after a pay-period ends.
 
 ## Requirements
 - C++17
