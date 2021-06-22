@@ -5,6 +5,7 @@
 // file manipulation
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 
 // time handling
 #include <ctime>
@@ -90,6 +91,7 @@ void clean_cards()
     // otherwise read logs and skip invalid lines
     auto logs = read_cards(true);
     write_cards(logs);
+    std::cout << "Timecards have been cleaned" << std::endl;
 }
 
 void archive()

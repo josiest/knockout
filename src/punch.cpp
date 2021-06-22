@@ -2,18 +2,18 @@
 #include "punch/read.hpp"
 #include "punch/write.hpp"
 
+#include <boost/program_options.hpp>
+
 #include <unordered_map>
 #include <vector>
 #include <algorithm>
 
-std::string const usage = "punch <in|out|cards|clean|archive> [--help]";
-std::string const program_help =
-    "  in - start a new timecard\n"
-    "  out - complete the current timecard\n"
-    "  cards - list all current timecards\n"
-    "  archive - archive the current timecards\n"
-    "  clean - clean any current invalid timecard entries\n"
-    "  help - show this message\n";
+#include <stdexcept>
+#include <exception>
+
+namespace po = boost::program_options;
+
+std::string const usage = "punch [--help] <in|out|cards|clean|archive>";
 
 int main(int argc, char * argv[])
 {
@@ -27,48 +27,55 @@ int main(int argc, char * argv[])
         fs::create_directory(paths::archives);
     }
 
-    unordered_map<string, Command> argmap = {
-        {"in", Command::In}, {"out", Command::Out}, {"cards", Command::Cards},
-        {"clean", Command::Clean}, {"archive", Command::Archive},
-        {"help", Command::Help}
-    };
+    // create the program description
+    po::options_description program(usage);
+    program.add_options()
+        ("command", po::value<string>(), "which command to run")
+        ("help", "the help message")
+    ;
+    // specify 1 positional command
+    auto commands = po::positional_options_description{}.add("command", 1);
 
-    // print usage if not used correctly
-    if (argc < 2) {
-        cout << usage << endl;
-        return 1;
-    }
-    // search for the help argument
-    auto const arg_begin = argv;
-    auto const arg_end = argv + argc;
-    auto wants_help = [](string const & arg) { return arg == "--help"; };
-    auto const help_search = find_if(arg_begin, arg_end, wants_help);
+    // parse the top-level commands
+    po::variables_map args;
+    auto punch_parser = po::command_line_parser(argc, argv)
+        .options(program)
+        .positional(commands);
+    po::store(punch_parser.run(), args);
 
-    if (help_search != arg_end) {
-        cout << usage << endl
-             << program_help << endl;
+    // print help if asked for
+    if (args.count("help")) {
+        cout << "Usage: " << usage << endl;
         return 0;
     }
 
-    // process the arguments
-    string const arg = argv[1];
-    auto const command = map_get(argmap, arg, Command::Invalid);
+    // if command not specified print usage
+    if (!args.count("command")) {
+        cout << "Usage: " << usage << endl;
+        return 1;
+    }
+
+    // process the command
     try {
-        switch (command) {
+        switch (map_get(argmap, args["command"].as<string>(),
+                        Command::Invalid)) {
+
         case Command::In:       punch_in();     break;
         case Command::Out:      punch_out();    break;
         case Command::Cards:    print_cards();  break;
-        case Command::Clean:    clean_cards();  break;
         case Command::Archive:  archive();      break;
+        case Command::Clean:    clean_cards();  break;
         default: cout << usage << endl; return 1;
         }
     }
     catch (invalid_argument e) {
         cout << "punch-card is ill formatted" << endl
              << "  " << e.what() << endl;
+        return 1;
     }
     catch (runtime_error e) {
         cout << e.what() << endl;
+        return 1;
     }
     catch (exception e) {
         cout << "something went wrong:" << endl

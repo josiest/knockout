@@ -36,7 +36,12 @@ namespace formats {
 }
 
 enum class Command {
-    In, Out, Cards, Clean, Archive, Help, Invalid
+    In, Out, Cards, Archive, Clean, Invalid
+};
+
+inline std::unordered_map<std::string, Command> const argmap{
+    {"in", Command::In}, {"out", Command::Out}, {"cards", Command::Cards},
+    {"archive", Command::Archive}, {"clean", Command::Clean}
 };
 
 /**

@@ -109,8 +109,8 @@ void print_card(std::ostream & os, card const & punch_card)
 
     // print the total hours
     auto const hours = std::difftime(std::mktime(&punch_out),
-                                     std::mktime(&punch_in)) / 360.0;
-    os << std::setprecision(3) << std::fixed;
+                                     std::mktime(&punch_in)) / 3600.0;
+    os << std::setprecision(2) << std::fixed;
     os << "Total hours: " << hours << std::endl;
 }
 

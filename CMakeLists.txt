@@ -1,9 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(knockout VERSION 0.1.4)
+project(knockout VERSION 0.1.5)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+# find dependent packages
+find_package(Boost COMPONENTS program_options REQUIRED)
 
 # project structure
 set(PROGRAM_NAME punch)
@@ -27,7 +30,9 @@ add_executable(${PROGRAM_NAME} ${SOURCES})
 set(EXECUTABLE_OUTPUT_PATH ${knockout_SOURCE_DIR}/bin)
 
 # link dependencies and include directories
-target_link_libraries(${PROGRAM_NAME} ${LIBRARIES})
+target_link_libraries(${PROGRAM_NAME}
+    ${LIBRARIES}
+    ${Boost_LIBRARIES})
 target_include_directories(${PROGRAM_NAME} PRIVATE
     ${INCLUDE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}/${INCLUDE_DIR})

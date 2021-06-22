@@ -24,7 +24,8 @@ after a pay-period ends.
 
 ## Requirements
 - C++17
-- CMake 3.10
+- CMake >= 3.10
+- Boost
 
 ## Installation
 
