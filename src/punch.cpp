@@ -6,6 +6,17 @@ enum class Command {
     In, Out, Log, Invalid
 };
 
+template<typename K, typename V>
+V map_get(std::unordered_map<K, V> const & map, K const & key,
+          V const & default_value)
+{
+    auto const search = map.find(key);
+    if (search != map.end()) {
+        return search->second;
+    }
+    return default_value;
+}
+
 int main(int argc, char * argv[])
 {
     using namespace std;
@@ -21,12 +32,8 @@ int main(int argc, char * argv[])
     }
 
     // process arguments
-    auto const command_search = argmap.find(argv[1]);
-    auto command = Command::Invalid;
-    if (command_search != argmap.end()) {
-        command = command_search->second;
-    }
-    switch (command) {
+    string arg = argv[1];
+    switch (map_get(argmap, arg, Command::Invalid)) {
     case Command::In:
         break;
     case Command::Out:
