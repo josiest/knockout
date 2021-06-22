@@ -4,5 +4,6 @@
 namespace fs = std::filesystem;
 
 namespace paths {
-    fs::path project_dir{"@knockout_SOURCE_DIR@"};
+    inline fs::path const project_dir{"@knockout_SOURCE_DIR@"};
+    inline fs::path const punchcard_dir = project_dir/"punch-cards";
 }
