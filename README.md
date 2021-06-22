@@ -8,12 +8,12 @@ knockout is a simple program to record time punches
 
 ## Installation
 
-```shellsession
-cd <installation-root-dir>
-git clone https://github.com/josiest/knockout.git && cd knockout
-mkdir build && cd build
-cmake ..
-cmake --build .
+```console
+$ cd <installation-root-dir>
+$ git clone https://github.com/josiest/knockout.git && cd knockout
+$ mkdir build && cd build
+$ cmake ..
+$ cmake --build .
 ```
 
 In order to run `punch` anywhere on the console, you'll need to add
@@ -23,7 +23,7 @@ In order to run `punch` anywhere on the console, you'll need to add
 
 The following example punches in, punches out, then prints the timecard
 
-```shellsession
+```console
 $ punch in
 $ punch out
 $ punch log
