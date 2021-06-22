@@ -32,16 +32,24 @@ namespace paths {
 namespace formats {
     inline char const * const ctime = "%a %b %e %H:%M:%S %Y";
     inline char const * const day = "%a %m/%d";
-    inline char const * const hour = "%R %p";
+    inline char const * const hour = "%I:%M %p";
 }
 
 enum class Command {
-    In, Out, Cards, Archive, Clean, Invalid
+    In, Out, Cards, Invalid
 };
 
 inline std::unordered_map<std::string, Command> const argmap{
-    {"in", Command::In}, {"out", Command::Out}, {"cards", Command::Cards},
-    {"archive", Command::Archive}, {"clean", Command::Clean}
+    {"in", Command::In}, {"out", Command::Out}, {"cards", Command::Cards}
+};
+
+enum class CardsCommand {
+    List, Archive, Clean, Invalid
+};
+
+inline std::unordered_map<std::string, CardsCommand> const cards_argmap{
+    {"list", CardsCommand::List}, {"archive", CardsCommand::Archive},
+    {"clean", CardsCommand::Clean}
 };
 
 /**
@@ -53,8 +61,10 @@ inline std::unordered_map<std::string, Command> const argmap{
  *
  * :return: map[key] if it exists, otherwise default_value
  */
-template<typename K, typename V>
-V map_get(std::unordered_map<K, V> const & map, K const & key,
+template<typename K, typename V,
+         template <typename, typename> class map_t,
+         typename... Args>
+V map_get(map_t<K, V, Args...> const & map, K const & key,
           V const & default_value)
 {
     auto const search = map.find(key);
