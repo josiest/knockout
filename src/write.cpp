@@ -23,10 +23,20 @@ void punch_in()
     if (fs::exists(paths::punch_in)) {
         throw std::runtime_error{"already punched in"};
     }
-    // otherwise write the current time to the punch-in file
+    // otherwise read the current time
+    std::time_t const now = std::time(nullptr);
+    std::tm in_time;
+    if (!localtime_r(&now, &in_time)) {
+        throw std::runtime_error("couldn't read local time");
+    }
+
+    // and write it to the punch-in file
     std::ofstream punch_file(paths::punch_in);
-    std::time_t const timestamp = std::time(nullptr);
-    punch_file << std::asctime(std::localtime(&timestamp));
+    punch_file << std::asctime(&in_time);
+
+    // finally notify the user about the punch-in info
+    std::cout << "Punched in at " << std::put_time(&in_time, formats::hour)
+              << std::endl;
 }
 
 void punch_out()
@@ -40,9 +50,9 @@ void punch_out()
     read_punch(&in_time);
 
     // read the punch-out time
-    std::time_t current_time = std::time(nullptr);
+    std::time_t now = std::time(nullptr);
     std::tm out_time;
-    if (!localtime_r(&current_time, &out_time)) {
+    if (!localtime_r(&now, &out_time)) {
         throw std::runtime_error{"couldn't read local time"};
     }
 
@@ -50,6 +60,10 @@ void punch_out()
     auto punch_cards = readlogs();
     punch_cards.emplace_back(in_time, out_time);
     writelogs(punch_cards);
+
+    // notify the user of punch-out info
+    std::cout << "Punched out at " << std::put_time(&out_time, formats::hour)
+              << std::endl;
 
     // finally remove the punch-in path
     fs::remove(paths::punch_in);

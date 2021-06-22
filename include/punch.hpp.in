@@ -33,7 +33,7 @@ namespace formats {
 }
 
 enum class Command {
-    In, Out, Log, Clean, Archive, Invalid
+    In, Out, Log, Clean, Archive, Help, Invalid
 };
 
 /**

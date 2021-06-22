@@ -3,6 +3,17 @@
 #include "punch/write.hpp"
 
 #include <unordered_map>
+#include <vector>
+#include <algorithm>
+
+std::string const usage = "punch <in|out|log|clean|archive> [--help]";
+std::string const program_help =
+    "  in - start a new timecard\n"
+    "  out - complete the current timecard\n"
+    "  log - list all current timecards\n"
+    "  archive - archive the current timecards\n"
+    "  clean - clean any current invalid timecard entries\n"
+    "  help - show this message\n";
 
 int main(int argc, char * argv[])
 {
@@ -18,15 +29,27 @@ int main(int argc, char * argv[])
 
     unordered_map<string, Command> argmap = {
         {"in", Command::In}, {"out", Command::Out}, {"log", Command::Log},
-        {"clean", Command::Clean}, {"archive", Command::Archive}
+        {"clean", Command::Clean}, {"archive", Command::Archive},
+        {"help", Command::Help}
     };
 
     // print usage if not used correctly
-    string const usage = "punch <in|out|log|clean|archive>";
     if (argc < 2) {
         cout << usage << endl;
         return 1;
     }
+    // search for the help argument
+    auto const arg_begin = argv;
+    auto const arg_end = argv + argc;
+    auto wants_help = [](string const & arg) { return arg == "--help"; };
+    auto const help_search = find_if(arg_begin, arg_end, wants_help);
+
+    if (help_search != arg_end) {
+        cout << usage << endl
+             << program_help << endl;
+        return 0;
+    }
+
     // process the arguments
     string const arg = argv[1];
     auto const command = map_get(argmap, arg, Command::Invalid);
