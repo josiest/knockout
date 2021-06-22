@@ -65,7 +65,7 @@ bool read_punch(std::tm * in_time)
     return true;
 }
 
-std::vector<card> readlogs(bool skip_invalid)
+std::vector<card> read_cards(bool skip_invalid)
 {
     // if no punch card file exists, then no hours have been punched
     std::vector<card> punch_cards;
@@ -104,7 +104,7 @@ void print_card(std::ostream & os, card const & punch_card)
     os << "Time in:\t" << std::put_time(&punch_in, formats::hour)
                        << std::endl;
 
-    os << "Time out:\t" << std::put_time(&punch_in, formats::hour)
+    os << "Time out:\t" << std::put_time(&punch_out, formats::hour)
                         << std::endl;
 
     // print the total hours
@@ -114,10 +114,10 @@ void print_card(std::ostream & os, card const & punch_card)
     os << "Total hours: " << hours << std::endl;
 }
 
-void printlogs()
+void print_cards()
 {
-    // read the logs
-    auto const punch_cards = readlogs();
+    // read the timecards
+    auto const punch_cards = read_cards();
     // print each punch-card in a printable way
     std::string sep = "";
     std::for_each(punch_cards.begin(), punch_cards.end(),

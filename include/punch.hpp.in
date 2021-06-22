@@ -19,11 +19,14 @@ namespace fs = std::filesystem;
 using card = std::tuple<std::tm, std::tm>;
 
 namespace paths {
+    // directories
     inline fs::path const project{"@knockout_SOURCE_DIR@"};
     inline fs::path const resources = project/"resources";
+    inline fs::path const archives = resources/"archives";
+
+    // files
     inline fs::path const punch_cards = resources/"punch-cards.csv";
     inline fs::path const punch_in = resources/"punch-in.txt";
-    inline fs::path const archives = resources/"archives";
 }
 
 namespace formats {

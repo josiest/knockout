@@ -57,9 +57,9 @@ void punch_out()
     }
 
     // update punch-cards
-    auto punch_cards = readlogs();
+    auto punch_cards = read_cards();
     punch_cards.emplace_back(in_time, out_time);
-    writelogs(punch_cards);
+    write_cards(punch_cards);
 
     // notify the user of punch-out info
     std::cout << "Punched out at " << std::put_time(&out_time, formats::hour)
@@ -69,27 +69,27 @@ void punch_out()
     fs::remove(paths::punch_in);
 }
 
-void writelogs(std::vector<card> const & logs)
+void write_cards(std::vector<card> const & cards)
 {
     // load the file for writing
     std::ofstream punch_file(paths::punch_cards);
 
     // write the cards line-by-line
-    std::for_each(logs.begin(), logs.end(),
+    std::for_each(cards.begin(), cards.end(),
     [&punch_file](auto const & punch_card) {
         punch_file << punch_card << std::endl;
     });
 }
 
-void cleanlogs()
+void clean_cards()
 {
     // don't do anything if punch-card path doesn't exist
     if (!fs::exists(paths::punch_cards)) {
         return;
     }
     // otherwise read logs and skip invalid lines
-    auto logs = readlogs(true);
-    writelogs(logs);
+    auto logs = read_cards(true);
+    write_cards(logs);
 }
 
 void archive()

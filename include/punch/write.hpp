@@ -4,9 +4,9 @@
 #include <vector>
 
 /**
- * Delete any invalid punch-card from punch-cards file
+ * Delete any invalid timecards from punch-cards file
  */
-void cleanlogs();
+void clean_cards();
 
 /**
  * Write a punch-in with the current time
@@ -23,11 +23,11 @@ void punch_in();
 void punch_out();
 
 /**
- * Write punch-cards to file
+ * Write timecards to file
  *
- * :param logs: the timelogs to write
+ * :param cards: the timecards to write
  */
-void writelogs(std::vector<card> const & logs);
+void write_cards(std::vector<card> const & cards);
 
 /**
  * Archive the current punch-cards file

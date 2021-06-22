@@ -57,8 +57,8 @@ int main(int argc, char * argv[])
         switch (command) {
         case Command::In:       punch_in();     break;
         case Command::Out:      punch_out();    break;
-        case Command::Cards:    printlogs();    break;
-        case Command::Clean:    cleanlogs();    break;
+        case Command::Cards:    print_cards();  break;
+        case Command::Clean:    clean_cards();  break;
         case Command::Archive:  archive();      break;
         default: cout << usage << endl; return 1;
         }

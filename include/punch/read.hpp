@@ -9,10 +9,11 @@
 namespace std {
     inline ostream & operator<<(ostream & os, card const & entry)
     {
-        std::tm const & punch_in = get<0>(entry);
-        std::tm const & punch_out = get<1>(entry);
-        os << std::put_time(&punch_in, formats::ctime) << ","
-           << std::put_time(&punch_out, formats::ctime);
+        std::tm const & in_time = get<0>(entry);
+        std::tm const & out_time = get<1>(entry);
+
+        os << std::put_time(&in_time, formats::ctime) << ","
+           << std::put_time(&out_time, formats::ctime);
         return os;
     }
 }
@@ -53,14 +54,14 @@ bool read_punch(std::tm * in_time);
  *
  * :return: a vector of all the punch-cards
  */
-std::vector<card> readlogs(bool skip_invalid = false);
+std::vector<card> read_cards(bool skip_invalid = false);
 
 /**
- * Print a single punch-card
+ * Print a single timecard
  */
 void print_card(std::ostream & os, card const & punch_card);
 
 /**
- * Print the time logs
+ * Print the timecards
  */
-void printlogs();
+void print_cards();
