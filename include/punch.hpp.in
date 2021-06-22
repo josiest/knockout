@@ -1,9 +1,82 @@
 #pragma once
 
+// resource handlers/data structures
+#include <unordered_map>
+#include <vector>
+#include <tuple>
+#include <string>
+
+// utility
 #include <filesystem>
+#include <ctime>
+
 namespace fs = std::filesystem;
+using log_entry = std::tuple<std::tm, std::tm>;
 
 namespace paths {
-    inline fs::path const project_dir{"@knockout_SOURCE_DIR@"};
-    inline fs::path const punchcard_dir = project_dir/"punch-cards";
+    inline fs::path const project{"@knockout_SOURCE_DIR@"};
+    inline fs::path const resources = project/"resources";
+    inline fs::path const punch_cards = resources/"punch-cards.csv";
+    inline fs::path const punch_in = resources/"punch-in.txt";
 }
+
+enum class Command {
+    In, Out, Log, Clean, Archive, Invalid
+};
+
+/**
+ * Get a value from a map or a default value if the key doesn't exist
+ *
+ * :param map: the map to get the value from
+ * :param key: the key to query with
+ * :param default_value: the default value to use if key doesn't exist
+ *
+ * :return: map[key] if it exists, otherwise default_value
+ */
+template<typename K, typename V>
+V map_get(std::unordered_map<K, V> const & map, K const & key,
+          V const & default_value)
+{
+    auto const search = map.find(key);
+    if (search != map.end()) {
+        return search->second;
+    }
+    return default_value;
+}
+
+/**
+ * Delete any invalid log entries from punch-cards
+ */
+void cleanlogs();
+
+/**
+ * Read the latest punch-in
+ *
+ * :return: the latest punch if punched in, otherwise nullptr
+ *
+ * :throws: runtime_error if punch is invalid format.
+ */
+std::tm * read_punch();
+
+/**
+ * Write timelogs to punch-cards
+ *
+ * :param logs: the timelogs to write
+ */
+void writelogs(std::vector<log_entry> const & logs);
+
+/**
+ * Read timelogs from punch-cards
+ */
+std::vector<log_entry> readlogs();
+
+/**
+ * Parse a log entry
+ *
+ * :param line: the entry string to parse
+ *
+ * :return: the timestamps associated with the punch-in and punch-out
+ *
+ * :throws: invalid_argument if the string is not valid format
+ */
+log_entry parse_log_entry(std::string const & line);
