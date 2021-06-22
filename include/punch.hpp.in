@@ -2,7 +2,6 @@
 
 // resource handlers/data structures
 #include <unordered_map>
-#include <vector>
 #include <tuple>
 #include <string>
 
@@ -11,13 +10,26 @@
 #include <ctime>
 
 namespace fs = std::filesystem;
-using log_entry = std::tuple<std::tm, std::tm>;
+
+/**
+ * A punch-card
+ *
+ * Write to a stream using the << operator.
+ */
+using card = std::tuple<std::tm, std::tm>;
 
 namespace paths {
     inline fs::path const project{"@knockout_SOURCE_DIR@"};
     inline fs::path const resources = project/"resources";
     inline fs::path const punch_cards = resources/"punch-cards.csv";
     inline fs::path const punch_in = resources/"punch-in.txt";
+    inline fs::path const archives = resources/"archives";
+}
+
+namespace formats {
+    inline char const * const ctime = "%a %b %e %H:%M:%S %Y";
+    inline char const * const day = "%a %m/%d";
+    inline char const * const hour = "%R %p";
 }
 
 enum class Command {
@@ -43,40 +55,3 @@ V map_get(std::unordered_map<K, V> const & map, K const & key,
     }
     return default_value;
 }
-
-/**
- * Delete any invalid log entries from punch-cards
- */
-void cleanlogs();
-
-/**
- * Read the latest punch-in
- *
- * :return: the latest punch if punched in, otherwise nullptr
- *
- * :throws: runtime_error if punch is invalid format.
- */
-std::tm * read_punch();
-
-/**
- * Write timelogs to punch-cards
- *
- * :param logs: the timelogs to write
- */
-void writelogs(std::vector<log_entry> const & logs);
-
-/**
- * Read timelogs from punch-cards
- */
-std::vector<log_entry> readlogs();
-
-/**
- * Parse a log entry
- *
- * :param line: the entry string to parse
- *
- * :return: the timestamps associated with the punch-in and punch-out
- *
- * :throws: invalid_argument if the string is not valid format
- */
-log_entry parse_log_entry(std::string const & line);
