@@ -11,7 +11,7 @@ $ punch in
 Punched in at 10:22 AM
 $ punch out
 Punched out at 10:22 AM
-$ punch log
+$ punch cards
 Tue 06/22
 Time in:        10:22 AM
 Time out:       10:22 AM

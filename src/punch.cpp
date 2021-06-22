@@ -6,11 +6,11 @@
 #include <vector>
 #include <algorithm>
 
-std::string const usage = "punch <in|out|log|clean|archive> [--help]";
+std::string const usage = "punch <in|out|cards|clean|archive> [--help]";
 std::string const program_help =
     "  in - start a new timecard\n"
     "  out - complete the current timecard\n"
-    "  log - list all current timecards\n"
+    "  cards - list all current timecards\n"
     "  archive - archive the current timecards\n"
     "  clean - clean any current invalid timecard entries\n"
     "  help - show this message\n";
@@ -28,7 +28,7 @@ int main(int argc, char * argv[])
     }
 
     unordered_map<string, Command> argmap = {
-        {"in", Command::In}, {"out", Command::Out}, {"log", Command::Log},
+        {"in", Command::In}, {"out", Command::Out}, {"cards", Command::Cards},
         {"clean", Command::Clean}, {"archive", Command::Archive},
         {"help", Command::Help}
     };
@@ -57,7 +57,7 @@ int main(int argc, char * argv[])
         switch (command) {
         case Command::In:       punch_in();     break;
         case Command::Out:      punch_out();    break;
-        case Command::Log:      printlogs();    break;
+        case Command::Cards:    printlogs();    break;
         case Command::Clean:    cleanlogs();    break;
         case Command::Archive:  archive();      break;
         default: cout << usage << endl; return 1;
