@@ -131,9 +131,9 @@ void printlogs()
     // print the latest punch in if it exists
     std::tm latest_punch;
     if (read_punch(&latest_punch)) {
-        std::cout << std::put_time(&latest_punch, formats::day) << std::endl;
-        std::cout << "Time in: "
-                  << std::put_time(&latest_punch, formats::hour)
+        std::cout << sep << std::put_time(&latest_punch, formats::day)
+                  << std::endl
+                  << "Time in: " << std::put_time(&latest_punch, formats::hour)
                   << std::endl;
     }
 }
