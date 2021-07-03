@@ -33,7 +33,7 @@ void punch_in()
 
     // and write it to the punch-in file
     std::ofstream punch_file(paths::punch_in);
-    punch_file << std::asctime(&in_time);
+    punch_file << std::put_time(&in_time, formats::ctime);
 
     // finally notify the user about the punch-in info
     std::cout << "Punched in at " << std::put_time(&in_time, formats::hour)

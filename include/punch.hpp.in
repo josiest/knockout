@@ -30,7 +30,7 @@ namespace paths {
 }
 
 namespace formats {
-    inline char const * const ctime = "%a %b %e %H:%M:%S %Y";
+    inline char const * const ctime = "%a %b %d %H:%M:%S %Y";
     inline char const * const day = "%a %m/%d";
     inline char const * const hour = "%I:%M %p";
 }
